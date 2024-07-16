@@ -1,0 +1,25 @@
+To give the user an opportunity to select the target range after running the macro, use this code:
+
+Public Sub RemoveBlankLines()
+  Dim SourceRange As Range
+  Dim EntireRow As Range
+
+  On Error Resume Next
+
+  Set SourceRange = Application.InputBox( _
+    "Select a range:", "Delete Blank Rows", _
+    Application.Selection.Address, Type:=8)
+
+  If Not (SourceRange Is Nothing) Then
+    Application.ScreenUpdating = False
+
+    For I = SourceRange.Rows.Count To 1 Step -1
+      Set EntireRow = SourceRange.Cells(I, 1).EntireRow
+
+      If Application.WorksheetFunction.CountA(EntireRow) = 0 Then
+        EntireRow.Delete
+      End If
+    Next
+    Application.ScreenUpdating = True
+  End If
+End Sub
